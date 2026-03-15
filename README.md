@@ -47,7 +47,7 @@ Score247 lets **players define the rules before the match starts** — so there 
 ### 🎯 Fair Coin Toss
 - Built-in animated digital toss
 - Transparent and non-manipulable
-- Ends all *"dubara karo"* arguments
+- Ends all *"ball again"* arguments
 
 ### 📊 Match Results & Stats
 - Full match scorecard
@@ -56,7 +56,7 @@ Score247 lets **players define the rules before the match starts** — so there 
 - Clean, dispute-proof result screen
 
 ### 🎨 Design Philosophy
-- Apple × Braun aesthetic — minimal, functional, beautiful
+- Minimal, functional, beautiful
 - OLED-friendly dark score header
 - Large touch targets for in-match pressure moments
 - No ads. No tracking. No noise.
