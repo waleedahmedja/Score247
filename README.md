@@ -1,162 +1,179 @@
-# 🏏 Score247
+<div align="center">
 
-**Score247** is a lightweight, offline-first cricket scoring app built *for gully cricket*.
+# S C O R E 2 4 7
 
-Not stadium cricket. Not ICC-perfect rules.  
-Just real street matches — custom overs, flexible rules, heated moments, and memories that last longer than the score itself.
+**The only cricket scoring app built for gully cricket.**
+Kotlin + Jetpack Compose. Designed to end arguments before they start.
 
-Score247 exists because **no existing app truly understands how gully cricket works**.
+<br/>
 
----
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-7F52FF?style=flat-square&logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Compose](https://img.shields.io/badge/Jetpack_Compose-2023.10-4285F4?style=flat-square&logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
+![API](https://img.shields.io/badge/Min_SDK-26-2E7D4F?style=flat-square)
+![License](https://img.shields.io/badge/License-SCSL_v1.0-D97706?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
-## 🌍 Why Score247?
+<br/>
 
-Most cricket scoring apps assume:
-
-- Fixed overs
-- Fixed players
-- Official rules
-- Proper umpires
-
-Gully cricket assumes:
-
-- *"2 overs each"*
-- *"Last batsman akela khelega"*
-- *"Wide pe run hai ya nahi?"*
-- *"No ball dobara hogi ya nahi?"*
-
-Score247 lets **players define the rules before the match starts** — so there are no fights *during* the match.
+</div>
 
 ---
 
-## ✨ Features
+## The Idea
 
-### 🧠 Fully Custom Match Rules
-- Custom number of overs (1–50)
-- Custom number of players per side (2–11)
-- Wide rules — runs on wide, or wide as legal ball
-- No-ball rules — extra run, re-bowl, both, or neither
-- Last-batsman rule — play alone or all out
+Most cricket scoring apps were built for stadiums.
 
-### ⚡ Built for Fast Matches
-- Button-based scoring — no typing mid-over
-- Instant response for tense moments
-- Undo last ball at any time
-- Fully offline — zero internet required
+Score247 was built for the street.
 
-### 🎯 Fair Coin Toss
-- Built-in animated digital toss
-- Transparent and non-manipulable
-- Ends all *"ball again"* arguments
+No WiFi. No umpires. No fixed rules. Just two teams, a tape ball, and someone's phone on the boundary line.
 
-### 📊 Match Results & Stats
-- Full match scorecard
-- Batting & bowling statistics per player
-- Player of the Match (deterministic, explainable logic)
-- Clean, dispute-proof result screen
+Score247 lets you **define the rules before the match starts** — so there are no fights during it.
 
-### 🎨 Design Philosophy
-- Minimal, functional, beautiful
-- OLED-friendly dark score header
-- Large touch targets for in-match pressure moments
-- No ads. No tracking. No noise.
+> *"Wide pe run hai ya nahi?"*  
+> *"Last batsman akela khelega?"*  
+> *"No ball dobara hogi?"*
+
+Set it before the toss. Lock it in. Play.
 
 ---
 
-## 🛠 Tech Stack
+## What It Does
 
-| Layer | Technology |
+| Feature | Description |
 |---|---|
-| Language | Kotlin 2.0 |
-| UI | Jetpack Compose + Material 3 |
-| Architecture | MVVM + StateFlow |
-| Persistence | DataStore (JSON via kotlinx.serialization) |
-| Platform | Android (API 26+) |
-| Mode | Fully offline |
+| **Custom Rules Engine** | Wide runs, no-ball re-bowls, last batsman rule — all configurable per match |
+| **Fair Coin Toss** | Animated, randomised, transparent — ends all *"dubara karo"* |
+| **Ball-by-Ball Scoring** | Runs 0–6, extras, wickets — one tap per ball |
+| **Undo Last Ball** | Mistake on last ball? Rebuilt from event log — no state drift |
+| **Session Persistence** | DataStore-backed — match survives app kill, rotation, reboot |
+| **Full Scorecard** | Batting, bowling, RR, economy, Player of the Match |
+| **Offline Only** | No internet. No accounts. No ads. |
 
 ---
 
-## 📁 Project Structure
+## How It Works
 
 ```
-app/src/main/java/com/waleedahmedja/score247/
-├── MainActivity.kt
-├── data/
-│   ├── model/Models.kt          — Match state, rules, player, ball events
-│   └── datastore/MatchDataStore.kt
+Match Setup → Toss → Player Names
+                          │
+                    Live Scoring
+                          │
+             ┌────────────┴────────────┐
+             │   Ball-by-ball input    │
+             │   Undo / Extras / Wkt   │
+             └────────────┬────────────┘
+                          │
+                 Over complete? → Rotate strike
+                 Wicket? → Next batter
+                 Target chased? → Innings over
+                          │
+                   Innings Break
+                          │
+                   2nd Innings
+                          │
+                   Final Scorecard
+```
+
+---
+
+## Architecture
+
+Single ViewModel. Single StateFlow. No surprises.
+
+```
+app/
+├── ui/
+│   ├── screens/        # HomeScreen, SetupScreen, TossScreen,
+│   │                   # BattingSetupScreen, ScoringScreen,
+│   │                   # InningsBreakScreen, SummaryScreen
+│   ├── components/     # PrimaryButton, RunButton, AppCard, NumberStepper...
+│   └── theme/          # Color.kt, Type.kt, Theme.kt
 ├── viewmodel/
-│   └── MatchViewModel.kt        — All match logic, undo, scoring
-├── navigation/
-│   └── AppNavigation.kt
-└── ui/
-    ├── theme/                   — Color, typography, theme
-    ├── components/              — Reusable composables
-    └── screens/                 — Setup → Toss → Batting → Scoring → Summary
+│   └── MatchViewModel  # Single VM, StateFlow-driven, undo by event replay
+├── data/
+│   ├── model/          # MatchState, Innings, Player, BallEvent (sealed)
+│   └── datastore/      # MatchDataStore — JSON via kotlinx.serialization
+└── navigation/
+    └── AppNavigation   # Single-activity, composable nav
 ```
 
----
+**Key design decisions:**
 
-## 🚀 Getting Started
-
-1. Clone the repo
-2. Open in Android Studio (Hedgehog or newer)
-3. Sync Gradle — no additional setup required
-4. Run on device or emulator (API 26+)
-
-> The app is fully offline. No API keys, no backend, no accounts.
+- **Undo by replay** — `undoLastBall` drops the last `BallEvent` and replays all prior events from scratch. No reverse mutations. No state drift. Crash-proof.
+- **DataStore over Room** — match state is one JSON blob. One key. No schema migrations.
+- **`runCatching` on all serialization** — a corrupt save never crashes the app. Silently ignored.
+- **Reactive navigation** — screens navigate via `LaunchedEffect` watching `StateFlow`, not callbacks. Eliminates race conditions.
 
 ---
 
-## 🚦 Project Status
+## Design
 
-| Feature | Status |
-|---|---|
-| Core match engine | ✅ Complete |
-| Ball-by-ball scoring + undo | ✅ Complete |
-| Custom rules engine | ✅ Complete |
-| Batting & bowling stats | ✅ Complete |
-| DataStore persistence | ✅ Complete |
-| Adaptive app icon | ✅ Complete |
-| Splash screen | ✅ Complete |
-| Play Store preparation | 🟡 Pending |
+The UI is built around one principle: **clarity under pressure**.
+
+- Warm off-white backgrounds (`#F9F9F7`) — easy on the eyes in sunlight
+- Single green accent (`#2E7D4F`) — field green, desaturated, calm
+- Dark score header (`#1A1A18`) — maximum contrast for the live score
+- System fonts only — no downloads, crisp on every device
+- Adaptive icon — field green background, white bat + ball
 
 ---
 
-## 🤝 Contributing
+## Built With
 
-Score247 is open for community contributions. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
----
-
-## 📄 License
-
-Score247 is released under the **Score247 Community Source License (SCSL) v1.0**.  
-See [LICENSE.md](LICENSE.md) for full terms.
-
-Key points: free to use, study, and contribute — but not to sell or rebrand.
+- **Kotlin 2.0** + Coroutines + Flow
+- **Jetpack Compose** (BOM 2023.10) + Material 3
+- **Android DataStore** — async preferences
+- **kotlinx.serialization** — JSON encoding with `@SerialName` discriminators
+- **Compose Navigation** — single-activity
+- **MVVM** — `AndroidViewModel` + `StateFlow`
+- **SplashScreen API** — `core-splashscreen` for branded launch
 
 ---
 
-## 📋 Code of Conduct
+## Installation
 
-This project follows a contributor code of conduct. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+**From Releases:**
+
+→ [github.com/waleedahmedja/Score247/releases](https://github.com/waleedahmedja/Score247/releases)
+
+Download the `.apk`, enable "Install from unknown sources", install.
+
+**Build from source:**
+
+```bash
+git clone https://github.com/waleedahmedja/Score247.git
+cd Score247
+./gradlew assembleDebug
+```
+
+Requires Android Studio Hedgehog or later, JDK 17+.
 
 ---
 
-## 📥 Download
+## Contributing
 
-Latest APK: [GitHub Releases](https://github.com/waleedahmedja/Score247/releases)
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.
+
+Score247 has a clear design philosophy and a strong offline-first constraint. Contributions that add internet dependencies, analytics, or unnecessary complexity won't be merged. Keep it simple. Keep it fast. Keep it for the street.
 
 ---
 
-❤️ Final Note
+## License
 
-Score247 isn't just an app.
+[Score247 Community Source License (SCSL) v1.0](LICENSE.md) — free to use, study, modify. Attribution required. Public changes stay public. No reselling or rebranding.
 
-It's that dusty pitch.  
-That taped tennis ball.  
-That one match everyone still argues about.
+---
 
-Built for the streets. Built with heart.
+## Privacy
 
-— **waleedahmedja**
+Score247 collects nothing. Stores nothing outside your device. Has no internet permission. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
+
+---
+
+<div align="center">
+
+*Built for that dusty pitch. That taped tennis ball. That one match everyone still argues about.*
+
+**— waleedahmedja**
+
+</div>
