@@ -35,6 +35,22 @@ Set it before the toss. Lock it in. Play.
 
 ---
 
+## Philosophy
+
+Score247 is built on a simple idea:
+
+Clarity before action.
+
+In street cricket, most problems don’t come from gameplay.  
+They come from disagreement.
+
+So instead of controlling the game, Score247 controls the ambiguity.
+
+Define the rules once.  
+Play without interruption.
+
+---
+
 ## What It Does
 
 | Feature | Description |
@@ -224,22 +240,6 @@ Score247 has a clear design philosophy and a strong offline-first constraint. Co
 ## Privacy
 
 Score247 collects nothing. Stores nothing outside your device. Has no internet permission. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
-
----
-
-## Philosophy
-
-Score247 is built on a simple idea:
-
-Clarity before action.
-
-In street cricket, most problems don’t come from gameplay.  
-They come from disagreement.
-
-So instead of controlling the game, Score247 controls the ambiguity.
-
-Define the rules once.  
-Play without interruption.
 
 ---
 
