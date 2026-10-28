@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="Score247 banner" width="100%"/>
+<img src="v0.3.0/docs/banner.svg" alt="Score247 banner" width="100%"/>
 
 <br/>
 
