@@ -861,6 +861,3 @@ What the code does, and what it does **not** claim.
 | **ZXing** | A library that makes QR codes. |
 
 ---
-
-*You do not need to memorise any of this. Understand the three big ideas (immutable data, event
-log, one-way data flow) and you can derive the rest. Good luck.*
