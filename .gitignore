@@ -1,15 +1,15 @@
-# Python
-__pycache__/
-*.pyc
-
-# Buildozer
-.buildozer/
-bin/
-
-# Android / APK
-*.apk
-*.aab
-
-# OS
+# Gradle / Android Studio
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
 .DS_Store
-Thumbs.db
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Signing — never commit these
+*.jks
+*.keystore
+keystore.properties
