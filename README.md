@@ -257,7 +257,7 @@ The same documents are available inside the app under **About and legal**.
 
 ## 📦 How to download
 
-Download .apk file from [here]([PRIVACY.md](https://github.com/waleedahmedja/Score247/releases/tag/v0.3.0)) &nbsp;
+Download .apk file from [here](https://github.com/waleedahmedja/Score247/releases/tag/v0.3.0))
 
 ---
 
