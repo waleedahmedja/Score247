@@ -200,7 +200,7 @@ cd Score247
 ```
 
 > **Sharing pictures:** one small addition to `AndroidManifest.xml` is needed. See
-> [docs/SETUP_SHARING.md](docs/SETUP_SHARING.md).
+> [docs/SETUP_SHARING.md](v0.3.0/docs/SETUP_SHARING.md).
 
 <details>
 <summary><b>📁 Project structure</b></summary>
@@ -251,7 +251,7 @@ Contributions of every size are welcome, from typos to features. Start with
 
 ## 📄 Legal
 
-[MIT License](LICENSE) &nbsp;|&nbsp; [Privacy Policy](PRIVACY.md) &nbsp;|&nbsp; [Terms of Use](TERMS.md) &nbsp;|&nbsp; [Security](SECURITY.md) &nbsp;|&nbsp; [Changelog](CHANGELOG.md)
+[MIT License](LICENSE) &nbsp;|&nbsp; [Privacy Policy](PRIVACY.md) &nbsp;|&nbsp; [Terms of Use](TERMS.md) &nbsp;|&nbsp; [Security](SECURITY.md) &nbsp;
 
 The same documents are available inside the app under **About and legal**.
 
