@@ -5,13 +5,6 @@ read the project, learn from it, and talk about it confidently in an interview. 
 to know Kotlin or Android already. Every new word is explained the first time it appears, and
 there is a glossary at the end.
 
-**How to use this guide**
-
-1. Read Parts 1 to 3 once, straight through. They give you the big picture.
-2. Then read Part 4 (the files) next to the real source code, one file at a time.
-3. Read Part 5 (a ball's journey) slowly. It ties everything together.
-4. Before an interview, practise with Part 8 (questions and answers).
-
 > Line numbers change as the code changes, so this guide quotes short pieces of real code and
 > names the function they come from. Search for the function name to find it.
 
