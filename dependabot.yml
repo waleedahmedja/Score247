@@ -1,0 +1,13 @@
+# Checks weekly for newer versions of the libraries the app uses (and of the GitHub Actions
+# below) and opens a pull request when one is available. This is how security fixes in
+# dependencies reach the project.
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
