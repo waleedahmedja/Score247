@@ -26,10 +26,9 @@ there is a glossary at the end.
 5. [One ball's journey: from your thumb to the saved file](#5-one-balls-journey)
 6. [Undo, step by step](#6-undo-step-by-step)
 7. [Design decisions and trade-offs](#7-design-decisions-and-trade-offs)
-8. [Interview questions and answers](#8-interview-questions-and-answers)
-9. [Bugs that were found and fixed](#9-bugs-that-were-found-and-fixed)
-10. [Security and privacy](#10-security-and-privacy)
-11. [Glossary](#11-glossary)
+8. [Bugs that were found and fixed](#8-bugs-that-were-found-and-fixed)
+9. [Security and privacy](#9-security-and-privacy)
+10. [Glossary](#10-glossary)
 
 ---
 
@@ -769,79 +768,7 @@ Good engineers can explain **why**, and also what they gave up.
 
 ---
 
-## 8. Interview questions and answers
-
-Short, honest answers you can say out loud. Practise them in your own words.
-
-**Basics**
-
-1. **What is Score247?** An Android app for scoring street cricket. You switch house rules on or off, tap one button per ball, and it keeps the score, stats, target and result. It saves everything offline, keeps match history and career stats, and can share a scorecard as an image.
-2. **What is it built with?** Kotlin and Jetpack Compose with Material 3, a ViewModel with StateFlow, DataStore for saving, kotlinx.serialization for JSON, and Navigation-Compose.
-3. **What is the architecture?** Layered: UI, ViewModel, engine, data. The UI only draws state and sends events. The ViewModel is the single place state changes. The engine holds pure cricket rules.
-4. **What is a ViewModel and why use one?** An object that survives screen rotation and holds the data for the screens, so the match is not lost when the phone rotates.
-5. **What is a `StateFlow`?** An observable holder that always has a current value. The UI collects it and redraws when it changes.
-
-**The core idea**
-
-6. **What is event sourcing and why use it?** Instead of storing totals, store the list of things that happened and compute totals by replaying. It gives exact undo and an honest history.
-7. **How does undo work?** Replay all events except the last one into a fresh innings (`dropLast(1)`, `fold`). No special reverse code.
-8. **Why immutable data classes?** They cannot be changed by accident; each ball produces a new innings, so old versions stay valid. That is what makes undo and testing simple.
-9. **What is `fold`?** It combines a list into one value by feeding items one at a time into a running result. Here: start with an empty innings and apply each event.
-10. **Why is `BallEvent` a sealed class?** The compiler knows every possible kind, so a `when` that misses one will not compile. Adding a new event type forces me to handle it everywhere.
-11. **How do you undo a wicket exactly?** The chosen replacement batter is stored on the wicket event (`nextBatter`), so replay places the same person without asking again.
-12. **Why store the bowler on each event?** Otherwise changing the bowler and then pressing undo would re-credit earlier balls to the wrong bowler.
-
-**Cricket rules**
-
-13. **How do you decide a ball is legal?** `isLegalDelivery`: runs, wickets, byes and leg-byes are legal; no-balls never; wides only when the house rule says so.
-14. **How does the free hit work?** Find the latest event that is not a wide; if it was a no-ball, the free hit is active. Only a run-out may be recorded then.
-15. **What is the target and why +1?** First innings runs plus one, because equal scores are a tie, not a win.
-16. **How is "won by N wickets" worked out?** `maxWickets - wickets lost`. With "last batsman alone" on, the final batter counts as a wicket in hand.
-17. **How is Player of the Match chosen?** A points system: runs plus a strike-rate bonus (min 3 balls), 25 per wicket plus an economy bonus (min one over), only from the winning side.
-
-**State and saving**
-
-18. **How does the app survive being killed?** Every state change is saved as JSON to DataStore. On start, it loads the file and `resumeRoute(phase)` reopens the right screen.
-19. **Why `collectLatest` when saving?** If scoring is fast, an older write in progress is cancelled when a newer state arrives, so writes never queue up.
-20. **Why `drop(1)`?** The first emitted value is what we just loaded; saving it again is pointless.
-21. **What if the saved file is corrupt?** Decoding is wrapped in `try/catch` and treated as "no saved match", so the app starts fresh instead of crashing.
-22. **What does `ignoreUnknownKeys` do?** It lets older or newer app versions read each other's saved files without crashing.
-23. **Why `@SerialName` on events?** The saved name stays stable even if I rename the Kotlin class.
-
-**Compose**
-
-24. **What is recomposition?** Compose re-runs only the composables whose inputs changed, so the screen is a function of the state.
-25. **`remember` vs `rememberSaveable`?** `remember` survives redraws; `rememberSaveable` also survives rotation and process death.
-26. **What is `LaunchedEffect`?** A way to run side effects (like navigating) from a composable, tied to a key, and cancelled when it leaves the screen.
-27. **What is `DisposableEffect` used for here?** Keeping the screen on during scoring, and *always* restoring it on exit.
-28. **What is state hoisting?** Screens do not own the match data; they receive state and callbacks. It makes them easy to reuse and reason about.
-29. **Why `LazyColumn`?** It only draws the rows that are visible, which matters for long lists.
-30. **What are semantic colour tokens?** Colours named by role (`Ink`, `Pitch`) with a light and dark value, so screens never hard-code colours and dark mode is automatic.
-
-**Sharing and security**
-
-31. **How does image sharing work?** Draw a Bitmap with Canvas, save it to the private cache, expose it through a FileProvider with a temporary read permission, and open the system share sheet.
-32. **Why a FileProvider?** Android forbids sharing raw file paths between apps. A FileProvider gives a temporary `content://` address for one file.
-33. **Why a QR code?** Instagram removes captions and images cannot hide links, so a QR code lets viewers reach the GitHub page.
-34. **How do you stop malicious markdown links?** The viewer only opens `https` links; other schemes are ignored.
-35. **What privacy decisions did you make?** No internet permission, no accounts, no analytics. Data stays on the phone.
-
-**Testing and quality**
-
-36. **How did you test?** Unit tests for the engine, stats, formatter, parser and limits; a randomised test plays 400 innings under random rules and checks invariants and exact replay after every ball.
-37. **Why can the engine be tested without a phone?** It has no Android imports; it is plain Kotlin.
-38. **What is a regression?** A bug that breaks something that used to work. Tests exist to catch them.
-
-**Reflection**
-
-39. **What was the hardest bug?** Pick one from section 9. A good one: `popUpTo` with a concrete route matched nothing, so Back bounced users into a finished innings.
-40. **What would you do next?** Animated (GIF/video) share, per-match charts (worm and manhattan), export to CSV, tablet layout, real screenshots and a Play Store listing.
-41. **What would you change if you had many users?** Move history to Room (a database) and add optional cloud backup with encryption.
-42. **What did you learn?** Make illegal states impossible, keep rules out of the UI, and make the data model do the hard work (event log).
-
----
-
-## 9. Bugs that were found and fixed
+## 8. Bugs that were found and fixed
 
 These are great interview stories.
 
@@ -860,7 +787,7 @@ These are great interview stories.
 
 ---
 
-## 10. Security and privacy
+## 9. Security and privacy
 
 What the code does, and what it does **not** claim.
 
@@ -884,7 +811,7 @@ What the code does, and what it does **not** claim.
 
 ---
 
-## 11. Glossary
+## 10. Glossary
 
 | Word | Plain-English meaning |
 |---|---|
