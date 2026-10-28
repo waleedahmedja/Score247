@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-    Tells Android which folder of this app may be shared with other apps (WhatsApp,
-    Instagram...). Only the "shared" sub-folder of the cache is listed; nothing else
-    in the app's storage can be reached through the share feature.
--->
-<paths>
-    <cache-path name="shared" path="shared/" />
-</paths>
