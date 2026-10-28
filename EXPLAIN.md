@@ -30,7 +30,6 @@ there is a glossary at the end.
 9. [Bugs that were found and fixed](#9-bugs-that-were-found-and-fixed)
 10. [Security and privacy](#10-security-and-privacy)
 11. [Glossary](#11-glossary)
-12. [Suggested reading order and exercises](#12-suggested-reading-order-and-exercises)
 
 ---
 
@@ -933,47 +932,6 @@ What the code does, and what it does **not** claim.
 | **ViewModel** | An object that keeps screen data alive across rotation. |
 | **WCAG AA** | An accessibility standard for text contrast (at least 4.5:1). |
 | **ZXing** | A library that makes QR codes. |
-
----
-
-## 12. Suggested reading order and exercises
-
-### Reading order (about a weekend)
-
-1. `Models.kt`: just the vocabulary.
-2. `ScoringEngine.kt`: read `applyEvent` slowly, with a pen.
-3. `ScoringEngineTest.kt`: the tests describe the rules in plain examples.
-4. `MatchViewModel.kt`: see how actions reach the engine.
-5. `MatchDataStore.kt`: saving and loading.
-6. `Theme.kt` and `Components.kt`: the look.
-7. `ScoringScreen.kt`: how a screen is built from state.
-8. `AppNavigation.kt`: how screens connect.
-9. `CareerStats.kt`, then `HistoryScreen.kt`.
-10. `ShareSummary.kt`, `ScorecardImage.kt`, `ShareHelper.kt`.
-
-### Exercises (do these to really learn it)
-
-1. **Easy:** change the default `totalOvers` in `MatchRules` and watch the Setup screen change.
-2. **Easy:** add a new colour token and use it on one card in light and dark mode.
-3. **Medium:** add a rule "Wide gives 2 runs". Change `MatchRules`, `applyEvent`, the Setup screen
-   and add a test.
-4. **Medium:** show "Dot balls" in the scorecard (count events with 0 runs).
-5. **Medium:** add a *Maiden over* counter to bowlers (an over with no runs conceded).
-6. **Hard:** add a new dismissal such as "Retired hurt" (it must not credit the bowler). Compile
-   errors will show every `when` that needs updating. That is the sealed class helping you.
-7. **Hard:** draw a "worm" chart of runs per over from the event log on the Match detail screen.
-8. **Hard:** export the history as a CSV file and share it with the FileProvider you already have.
-
-### Where to look when something breaks
-
-| Symptom | Look at |
-|---|---|
-| The score is wrong | `ScoringEngine.applyEvent` and its test |
-| A screen shows stale data | Is it reading `vm.state` with `collectAsStateWithLifecycle`? |
-| The app reopens on the wrong screen | `resumeRoute` in `AppNavigation.kt` |
-| Data vanished after restart | `MatchDataStore` and the collectors in `MatchViewModel.init` |
-| Share crashes | The `<provider>` in the manifest and `res/xml/file_paths.xml` |
-| Dark mode text is unreadable | The token in `Theme.kt`, never a hard-coded colour |
 
 ---
 
