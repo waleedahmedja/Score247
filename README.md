@@ -257,16 +257,17 @@ The same documents are available inside the app under **About and legal**.
 
 ## 📦 How to download
 
-Download .apk file from [here](https://github.com/waleedahmedja/Score247/releases/tag/v0.3.0))
+Download .apk file from [here](https://github.com/waleedahmedja/Score247/releases/tag/v0.3.0)
 
 ---
 
-<div align="center">
-
-**Built by [waleedahmedja](https://github.com/waleedahmedja)**
 
 If Score247 helped your match, a ⭐ on the repo means a lot.
 
 [![Star History](https://api.star-history.com/svg?repos=waleedahmedja/Score247&type=Date)](https://star-history.com/#waleedahmedja/Score247&Date)
 
 </div>
+
+<div align="center">
+
+**Built by [waleedahmedja](https://github.com/waleedahmedja)**
